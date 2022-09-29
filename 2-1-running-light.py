@@ -35,3 +35,61 @@ try:
 finally:    
     GPIO.output(dac, 0)
     GPIO.cleanup()
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        import RPi.GPIO as GPIO
+import time
+
+dac = [26, 19, 13, 6, 5, 11, 9, 10]
+comp = 4
+troyka = 17
+levels = 2**8
+maxU = 3.3
+bits = 8
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(dac, GPIO.OUT, initial = GPIO.LOW)
+GPIO.setup(troyka, GPIO.OUT, initial = GPIO.HIGH)
+GPIO.setup(comp, GPIO.IN)
+
+def dec2bin(value): 
+    return [int(bit) for bit in bin(value)[2:].zfill(bits)]
+
+def num2dac(value):
+    signal = dec2bin(value)
+    GPIO.output(dac, signal)
+    return signal
+def adc():
+    for i in range(256):
+        GPIO.output(dac, dec2bin(i))
+        time.sleep(0.01)
+        if GPIO.input(comp) == 0:
+            return i
+    
+
+try:
+    while(True):
+        i = adc()
+        if i != 0:
+            print(i, int(3.3 * i/256 *100)/100, 'v')
+finally:
+        GPIO.output(dac, 0)
+        GPIO.cleanup()
+
