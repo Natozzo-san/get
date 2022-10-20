@@ -36,7 +36,10 @@ try:
         k=adc()
         if k!=0:
             gpio.output(leds, volume(k))
-            print(int(k/256*10))
+            if (int(k/256*10) == 0):
+                print(0)
+            else:
+                print(int(k/256*10) - 1)
 
         
 finally:

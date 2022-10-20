@@ -17,7 +17,7 @@ def adc():
     for i in range(7, -1, -1):
         k+=2**i
         gpio.output(dac, perev(k))
-        sleep(0.005)
+        sleep(0.01)
         if gpio.input(comp)==0:
             k-=2**i
     return k
